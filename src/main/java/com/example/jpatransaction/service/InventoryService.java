@@ -31,7 +31,7 @@ public class InventoryService {
     }
 
     @Transactional
-    public int update(int inventoryId, Integer count) {
+    public int update(int inventoryId, Integer count) throws InterruptedException {
         Inventory inventory = inventoryRepository.findOneForUpdate(inventoryId);
         entityManager.refresh(inventory);
         System.out.println("0000 current count = " + inventory.getCount());
@@ -39,11 +39,7 @@ public class InventoryService {
         int updatedCount = inventory.getCount() - count;
         System.out.println("1111 updatedCount = " + updatedCount);
         if (updatedCount >= 0) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(5000);
             inventory.setCount(updatedCount);
             System.out.println("2222 update inventory = " + inventory.getCount());
             inventoryRepository.saveAndFlush(inventory);
