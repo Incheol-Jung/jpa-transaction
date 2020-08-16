@@ -48,6 +48,7 @@ public class ItemService {
         Optional<Item> item = itemRepository.findById(itemId);
         if(item.isPresent()){
             if(inventoryService.update(item.get().getInventory().getId(), count) == 0){
+                System.out.println("can not update inventory");
                 throw new Exception("can not update inventory");
             }
         }
