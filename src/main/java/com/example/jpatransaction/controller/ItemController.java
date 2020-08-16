@@ -3,7 +3,6 @@ package com.example.jpatransaction.controller;
 import com.example.jpatransaction.entity.Item;
 import com.example.jpatransaction.service.ItemService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +41,17 @@ public class ItemController {
     public ResponseEntity update(@PathVariable int id, @RequestBody Item item) {
         itemService.update(id, item);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{id}/inventory/{count}")
+    public ResponseEntity updateInventory(@PathVariable int id, @PathVariable Integer count) {
+        int resultCount = itemService.updateInventory(id, count);
+        if(resultCount > 0){
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }else{
+            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+        }
+
     }
 
     @DeleteMapping("/{id}")
