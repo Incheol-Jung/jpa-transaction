@@ -33,18 +33,14 @@ public class InventoryService {
     @Transactional
     public int update(int inventoryId, Integer count) throws InterruptedException {
         Inventory inventory = inventoryRepository.findOneForUpdate(inventoryId);
+        System.out.println("JPA TRANSACTION TEST REFRESH BEFORE --> " + inventory.toString());
         entityManager.refresh(inventory);
-        System.out.println("0000 current count = " + inventory.getCount());
-
+        System.out.println("JPA TRANSACTION TEST REFRESH AFTER --> " + inventory.toString());
         int updatedCount = inventory.getCount() - count;
-        System.out.println("1111 updatedCount = " + updatedCount);
         if (updatedCount >= 0) {
             Thread.sleep(5000);
             inventory.setCount(updatedCount);
-            System.out.println("2222 update inventory = " + inventory.getCount());
-            inventoryRepository.saveAndFlush(inventory);
         } else {
-            System.out.println("can not update!!!!!!!!!!!!!!!!!!!!!!!! currentCount == " + inventory.getCount());
             return 0;
         }
 
