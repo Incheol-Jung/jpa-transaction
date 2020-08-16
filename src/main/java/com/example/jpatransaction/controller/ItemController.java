@@ -1,20 +1,52 @@
 package com.example.jpatransaction.controller;
 
 import com.example.jpatransaction.entity.Item;
+import com.example.jpatransaction.service.ItemService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Incheol Jung
  */
 @RestController
+@RequestMapping(value = "/items", produces = "application/json")
 public class ItemController {
-    @GetMapping()
+    private final ItemService itemService;
+
+    public ItemController(ItemService itemService) {this.itemService = itemService;}
+
+    @GetMapping
     public List<Item> get() {
-        return new ArrayList<Item>();
+        return itemService.get();
+    }
+
+    @PostMapping
+    public ResponseEntity add(@RequestBody Item item) {
+        Item addedItem = itemService.add(item);
+        return ResponseEntity.status(HttpStatus.OK).body(addedItem);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@PathVariable int id, @RequestBody Item item) {
+        itemService.update(id, item);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable int id) {
+        itemService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

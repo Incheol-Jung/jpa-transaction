@@ -1,0 +1,23 @@
+### get items
+GET http://localhost:8080/items
+
+### insert item
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+ "name" : "jacket",
+ "color" : "black"
+}
+
+### update item
+PUT http://localhost:8080/items/2
+Content-Type: application/json
+
+{
+ "name" : "dress",
+ "color" : "pink"
+}
+
+### delete item
+DELETE http://localhost:8080/items/1

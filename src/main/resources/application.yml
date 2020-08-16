@@ -4,10 +4,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+      use-new-id-generator-mappings: true
   datasource:
-    data:
     driver-class-name: org.h2.Driver
     data-username: sa
+    url: jdbc:h2:tcp://localhost/~/test
 
 server:
   port: 8080
