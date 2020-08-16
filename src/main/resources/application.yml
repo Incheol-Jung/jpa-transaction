@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: Inventory
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    data:
+    driver-class-name: org.h2.Driver
+    data-username: sa
+
+server:
+  port: 8080
