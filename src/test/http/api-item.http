@@ -1,6 +1,11 @@
 ### get items
 GET http://localhost:8080/items
 
+> {%client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
 ### insert item
 POST http://localhost:8080/items
 Content-Type: application/json
@@ -10,6 +15,10 @@ Content-Type: application/json
  "color" : "black"
 }
 
+> {%client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+});
+%}
 ### update item
 PUT http://localhost:8080/items/2
 Content-Type: application/json
@@ -19,5 +28,15 @@ Content-Type: application/json
  "color" : "pink"
 }
 
+> {%client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
 ### delete item
 DELETE http://localhost:8080/items/1
+
+> {%client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+});
+%}
