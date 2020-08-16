@@ -7,12 +7,14 @@ import javax.persistence.Id;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author Incheol Jung
  */
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Inventory {
     @Id
