@@ -45,13 +45,12 @@ public class ItemController {
 
     @PutMapping("/{id}/inventory/{count}")
     public ResponseEntity updateInventory(@PathVariable int id, @PathVariable Integer count) {
-        int resultCount = itemService.updateInventory(id, count);
-        if(resultCount > 0){
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+        try {
+            itemService.updateInventory(id, count);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")

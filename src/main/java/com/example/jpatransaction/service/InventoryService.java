@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
 
 /**
@@ -16,35 +17,41 @@ import javax.transaction.Transactional;
  */
 @Service
 public class InventoryService {
+
     @Autowired
     private InventoryRepository inventoryRepository;
 
-    public Inventory save(){
+    @Autowired
+    private EntityManager entityManager;
+
+    public Inventory save() {
         Inventory inventory = new Inventory();
         inventory.setCount(20);
         return inventoryRepository.save(inventory);
     }
 
     @Transactional
-    public int update(int inventoryId, Integer count) throws Exception {
-        AtomicInteger resultCount = new AtomicInteger(1);
-        Optional<Inventory> inventory = inventoryRepository.findById(inventoryId);
-        inventory.orElseThrow(Exception::new);
+    public int update(int inventoryId, Integer count) {
+        Inventory inventory = inventoryRepository.findOneForUpdate(inventoryId);
+        entityManager.refresh(inventory);
+        System.out.println("0000 current count = " + inventory.getCount());
 
-        inventory.ifPresent(i -> {
-            int updatedCount = i.getCount() - count;
-            if(updatedCount >= 0){
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                i.setCount(updatedCount);
-
-                resultCount.set(updatedCount);
+        int updatedCount = inventory.getCount() - count;
+        System.out.println("1111 updatedCount = " + updatedCount);
+        if (updatedCount >= 0) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
+            inventory.setCount(updatedCount);
+            System.out.println("2222 update inventory = " + inventory.getCount());
+            inventoryRepository.saveAndFlush(inventory);
+        } else {
+            System.out.println("can not update!!!!!!!!!!!!!!!!!!!!!!!! currentCount == " + inventory.getCount());
+            return 0;
+        }
 
-        return resultCount.get();
+        return 1;
     }
 }

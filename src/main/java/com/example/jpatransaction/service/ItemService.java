@@ -44,17 +44,12 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public int updateInventory(int itemId, Integer count) {
+    public void updateInventory(int itemId, Integer count) throws Exception{
         Optional<Item> item = itemRepository.findById(itemId);
-        AtomicInteger resultCount = new AtomicInteger(1);
-        item.ifPresent(i -> {
-            try {
-                resultCount.set(inventoryService.update(i.getInventory().getId(), count));
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(item.isPresent()){
+            if(inventoryService.update(item.get().getInventory().getId(), count) == 0){
+                throw new Exception("can not update inventory");
             }
-        });
-
-        return resultCount.get();
+        }
     }
 }

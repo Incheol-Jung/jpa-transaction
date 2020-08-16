@@ -1,0 +1,39 @@
+### update inventory
+PUT http://localhost:8080/items/1/inventory/10
+Content-Type: application/json
+
+> {%client.test("Request executed successfully", function() {
+    client.log(JSON.stringify(response))
+    client.assert(response.status === 204, "Response status is not 200");
+});
+%}
+
+### update inventory
+PUT http://localhost:8080/items/1/inventory/10
+Content-Type: application/json
+
+> {%client.test("Request executed successfully", function() {
+    client.log(JSON.stringify(response))
+    client.assert(response.status === 204, "Response status is not 200");
+});
+%}
+
+### update inventory
+PUT http://localhost:8080/items/1/inventory/10
+Content-Type: application/json
+
+> {%client.test("Request executed successfully", function() {
+    client.log(JSON.stringify(response))
+    client.assert(response.status === 204, "Response status is not 200");
+});
+%}
+
+### update inventory
+PUT http://localhost:8080/items/1/inventory/10
+Content-Type: application/json
+
+> {%client.test("Request executed successfully", function() {
+    client.log(JSON.stringify(response))
+    client.assert(response.status === 204, "Response status is not 200");
+});
+%}
