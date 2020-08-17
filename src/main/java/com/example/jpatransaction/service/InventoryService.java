@@ -31,7 +31,7 @@ public class InventoryService {
     }
 
     @Transactional
-    public int update(int inventoryId, Integer count) throws InterruptedException {
+    public int updateWithLock(int inventoryId, Integer count) throws InterruptedException {
         Inventory inventory = inventoryRepository.findOneForUpdate(inventoryId);
         System.out.println("JPA TRANSACTION TEST REFRESH BEFORE --> " + inventory.toString());
         entityManager.refresh(inventory);
@@ -40,10 +40,14 @@ public class InventoryService {
         if (updatedCount >= 0) {
             Thread.sleep(5000);
             inventory.setCount(updatedCount);
+            return 1;
         } else {
             return 0;
         }
+    }
 
-        return 1;
+    @Transactional
+    public int updateWithJpql(int inventoryId, Integer count) throws InterruptedException {
+        return inventoryRepository.updateInventory(count, inventoryId);
     }
 }

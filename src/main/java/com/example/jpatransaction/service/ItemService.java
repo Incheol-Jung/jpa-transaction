@@ -44,10 +44,20 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public void updateInventory(int itemId, Integer count) throws Exception{
+    public void updateInventoryWithLock(int itemId, Integer count) throws Exception{
         Optional<Item> item = itemRepository.findById(itemId);
         if(item.isPresent()){
-            if(inventoryService.update(item.get().getInventory().getId(), count) == 0){
+            if(inventoryService.updateWithLock(item.get().getInventory().getId(), count) == 0){
+                System.out.println("can not update inventory");
+                throw new Exception("can not update inventory");
+            }
+        }
+    }
+
+    public void updateInventoryWithJpql(int itemId, Integer count) throws Exception{
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(item.isPresent()){
+            if(inventoryService.updateWithJpql(item.get().getInventory().getId(), count) == 0){
                 System.out.println("can not update inventory");
                 throw new Exception("can not update inventory");
             }

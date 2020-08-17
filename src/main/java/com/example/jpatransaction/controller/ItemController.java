@@ -43,10 +43,20 @@ public class ItemController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}/inventory/{count}")
-    public ResponseEntity updateInventory(@PathVariable int id, @PathVariable Integer count) {
+    @PutMapping("/{id}/inventory/{count}/lock")
+    public ResponseEntity updateInventoryWithLock(@PathVariable int id, @PathVariable Integer count) {
         try {
-            itemService.updateInventory(id, count);
+            itemService.updateInventoryWithLock(id, count);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{id}/inventory/{count}/jpql")
+    public ResponseEntity updateInventoryWithJpql(@PathVariable int id, @PathVariable Integer count) {
+        try {
+            itemService.updateInventoryWithJpql(id, count);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
