@@ -6,10 +6,7 @@ import com.example.jpatransaction.entity.Inventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
 
 /**
@@ -26,16 +23,13 @@ public class InventoryService {
 
     public Inventory save() {
         Inventory inventory = new Inventory();
-        inventory.setCount(20);
+        inventory.setCount(10);
         return inventoryRepository.save(inventory);
     }
 
     @Transactional
     public int updateWithLock(int inventoryId, Integer count) throws InterruptedException {
         Inventory inventory = inventoryRepository.findOneForUpdate(inventoryId);
-        System.out.println("JPA TRANSACTION TEST REFRESH BEFORE --> " + inventory.toString());
-        entityManager.refresh(inventory);
-        System.out.println("JPA TRANSACTION TEST REFRESH AFTER --> " + inventory.toString());
         int updatedCount = inventory.getCount() - count;
         if (updatedCount >= 0) {
             Thread.sleep(5000);

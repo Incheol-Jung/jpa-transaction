@@ -16,7 +16,7 @@ import javax.persistence.QueryHint;
  * @author Incheol Jung
  */
 public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select i from Inventory i where i.id = :id")
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="10000")})
     Inventory findOneForUpdate(Integer id);
